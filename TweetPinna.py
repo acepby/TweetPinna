@@ -26,7 +26,7 @@ import signal
 import smtplib
 import subprocess
 import sys
-import thread
+import threading
 import time
 import tweepy
 
@@ -44,7 +44,7 @@ class TwitterStreamListener(tweepy.StreamListener):
 
         self.connect_mongodb()
         if not self.mongo_db_connected:
-            print "Cannot connect to MongoDB!"
+            print ("Cannot connect to MongoDB!")
             end_script(self)
 
     def connect_mongodb(self):

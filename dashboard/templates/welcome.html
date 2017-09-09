@@ -66,6 +66,30 @@
     </div>
   </div>
 
+  <div class="card tp-card">
+    <div class="card-block">
+      <h4 class="card-title">Most Retweets from the Collection</h4>
+      <div id="random-tweets">
+      {% for tweet in most_retweets %}
+
+        <div class="card" style="margin-bottom: 10px;">
+          <div class="card-block">
+            <h6 class="card-title">@{{ tweet['screen_name'] }}</h4>
+            <p class="card-text">{{ tweet['text']|safe }}</p>
+          </div>
+	  <div class="card-footer">
+	  <small class="text-muted"> Retweet: {{ tweet['retweets']}}</small> &emsp;
+	  <small class="text-muted"> Followers: {{ tweet['followers_count']}}</small>&emsp;
+          <small class="text-muted"> Created at: {{ tweet['timestamps']}}</small>		
+	  </div>
+        </div>
+
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+
+
 </div>
 
 {% endblock %}

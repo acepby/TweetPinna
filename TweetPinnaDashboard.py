@@ -158,7 +158,24 @@ def get_random_tweets(n):
     sample = list(mongo_coll_tweets.aggregate([{'$sample': {'size': n}}]))
     return sample
 
-
+def get_most_retweets(n):
+    """getting n most retweets"""
+    retweets=[]
+    pipeline=[
+             {"$group":{"_id":"$retweeted_status.id", "count":{"$max":"$retweeted_status.retweet_count"}}},
+             {"$sort":{"count":-1}}]
+    top_retweets=list(mongo_coll_tweets.aggregate(pipeline))[:n]
+    for tweet in top_retweets:
+        to_insert=list(mongo_coll_tweets.find({"retweeted_status.id":tweet["_id"]}))[0]
+        json={"retweet_id":tweet["_id"],
+              "screen_name":to_insert['retweeted_status']['user']['screen_name'],
+              "text":to_insert['retweeted_status']['text'],
+              "retweets":tweet["count"],
+              "followers_count":to_insert['retweeted_status']['user']['followers_count'],
+              "timestamps":to_insert['retweeted_status']['created_at']
+              }
+        retweets.append(json)
+    return retweets
 def get_token_count():
     """Generate the token count based on all documents.
 
@@ -254,6 +271,7 @@ def index():
                            docs_in_collection=mongo_coll_tweets.count(),
                            last_entry_time=get_last_entry_time(),
                            tracking_terms=cfg.twitter_tracking_terms,
+                           most_retweets=html_ann_tweet(get_most_retweets(5)),
                            random_tweets=html_ann_tweet(get_random_tweets(5)))
 
 
