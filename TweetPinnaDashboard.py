@@ -165,17 +165,18 @@ def get_most_retweets(n):
              {"$group":{"_id":"$retweeted_status.id", "count":{"$max":"$retweeted_status.retweet_count"}}},
              {"$sort":{"count":-1}}]
     top_retweets=list(mongo_coll_tweets.aggregate(pipeline))[:n]
-    for tweet in top_retweets:
-        to_insert=list(mongo_coll_tweets.find({"retweeted_status.id":tweet["_id"]}))[0]
-        json={"retweet_id":tweet["_id"],
-              "screen_name":to_insert['retweeted_status']['user']['screen_name'],
-              "text":to_insert['retweeted_status']['text'],
-              "retweets":tweet["count"],
-              "followers_count":to_insert['retweeted_status']['user']['followers_count'],
-              "timestamps":to_insert['retweeted_status']['created_at']
-              }
-        retweets.append(json)
-    return retweets
+    if len(top_retweets) == n :
+       for tweet in top_retweets:
+           to_insert=list(mongo_coll_tweets.find({"retweeted_status.id":tweet["_id"]}))[0]
+           json={"retweet_id":tweet["_id"],
+                 "screen_name":to_insert['retweeted_status']['user']['screen_name'],
+                 "text":to_insert['retweeted_status']['text'],
+                 "retweets":tweet["count"],
+                 "followers_count":to_insert['retweeted_status']['user']['followers_count'],
+                 "timestamps":to_insert['retweeted_status']['created_at']
+                 }
+           retweets.append(json)
+       return retweets
 def get_token_count():
     """Generate the token count based on all documents.
 
@@ -369,7 +370,9 @@ def ajax_get_docs_in_collection():
 def ajax_get_random_tweets(n):
     """Flask Ajax Get Random Tweets Route."""
     return dumps(get_random_tweets(int(n)))
-
+@app.route('/ajax/get/most_retweets/<n>')
+def ajax_get_most_retweets(n):
+    return dumps(get_most_retweets(int(n)))
 
 if __name__ == "__main__":
     # In production, the dashboard should be used with an actual webserver

@@ -47,7 +47,8 @@
       <img class="result-img img-fluid" src="{{ url_for('static', filename='img/results/tweets-over-time.png') }}" alt="Tweets over Time"/>
     </div>
   </div>
-
+<div class="row"> 
+ <div class="col-md-6">
   <div class="card tp-card">
     <div class="card-block">
       <h4 class="card-title">Random Tweets from the Collection</h4>
@@ -65,11 +66,12 @@
       </div>
     </div>
   </div>
-
+  </div>
+  <div class="col-md-6">
   <div class="card tp-card">
     <div class="card-block">
       <h4 class="card-title">Most Retweets from the Collection</h4>
-      <div id="random-tweets">
+      <div id="most-retweets">
       {% for tweet in most_retweets %}
 
         <div class="card" style="margin-bottom: 10px;">
@@ -78,9 +80,9 @@
             <p class="card-text">{{ tweet['text']|safe }}</p>
           </div>
 	  <div class="card-footer">
-	  <small class="text-muted"> Retweet: {{ tweet['retweets']}}</small> &emsp;
-	  <small class="text-muted"> Followers: {{ tweet['followers_count']}}</small>&emsp;
-          <small class="text-muted"> Created at: {{ tweet['timestamps']}}</small>		
+	  <small class="text-muted"> <i class="fa fa-retweet" aria-hidden="true"></i> {{ tweet['retweets']}}</small> &emsp;
+	  <small class="text-muted"> <i class="fa fa-users" aria-hidden="true"></i> {{ tweet['followers_count']}}</small>&emsp;
+          <small class="text-muted"> <i class="fa fa-clock-o" aria-hidden="true"></i> {{ tweet['timestamps']}}</small>		
 	  </div>
         </div>
 
@@ -88,8 +90,8 @@
       </div>
     </div>
   </div>
-
-
+  </div>
+ </div>
 </div>
 
 {% endblock %}

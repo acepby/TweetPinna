@@ -10,33 +10,23 @@
 			Currently <strong>{{ no_tracked_users }}</strong> users are tracked.
 		</div>
 	</div>
-
-	<div class="card tp-card">
-		{% for user in users %}
-		<div id="tracking" class="card-block">
-			<div class="media">
-				<div class="media-left">
-				    <a href="#">
-				    	{% if user.profile_picture %}
-				    	<img style="margin: 5px; width: 32px;" class="media-object" src="/static/img/users/user-{{ user.screen_name }}-current.jpg" alt="{{ user.screen_name }}">
-				    	{% else %}
-				    	<img style="margin: 5px; width: 32px;" class="media-object" src="/static/img/users/user-default.png" alt="{{ user.screen_name }}">
-				    	{% endif %}
-				    </a>
-			  	</div>
-			  	<div class="media-body">
-				  	<h4><strong>@</strong>{{ user.screen_name }}</h4>
-				  	<ul>
-						<li><em>Number of Tweets:</em> {{ user.number_of_tweets }}</li>
-						<li><em>Last Tweet Date:</em> {{ user.last_tweet_date }}</li>
-						<li><em>Last Tweet:</em> {{ user.last_tweet }}</li>
-					</ul>
-			 	</div>
-			 </div>
-		</div>
-		{% endfor %}
-	</div>
-
+	<div class="card-columns">
+	{% for user in users %}
+  	<div class="card">
+		{% if user.profile_picture %}
+    		<img class="card-img-top img-fluid" src="/static/img/users/user-{{ user.screen_name }}-current.jpg" alt="Card image cap">
+		{% else %}
+		<img class="card-img-top" src="/static/img/users/user-default.jpg" alt="Card image cap">
+		{% endif %}
+    <div class="card-block">
+      <h4 class="card-title">@{{user.screen_name}}</h4>
+      <p class="card-text"> <i class="fa fa-twitter" aria-hidden="true"></i> {{user.number_of_tweets}}</p>
+      <p class="card-text">{{user.last_tweet}}</p>
+      <p class="card-text"><small class="text-muted"> <i class="fa fa-clock-o" aria-hidden="true"></i> {{user.last_tweet_date}}</small></p>
+    </div>
+  </div>
+	{% endfor %}
+ </div>
 </div>
 
 {% endblock %}

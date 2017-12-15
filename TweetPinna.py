@@ -242,7 +242,7 @@ def start_stream(stream):
     log.log_add(1, 'Stream started by start_stream')
 
     try:
-        twitter_stream.filter(track=cfg.twitter_tracking_terms, async=True)
+        twitter_stream.filter(track=cfg.twitter_tracking_terms, async=True,stall_warnings=True)
     except Exception as e:
         log.log_add(cfg.log_email_threshold,
                     'twitter_stream Exception ({})'.format(e.message))
